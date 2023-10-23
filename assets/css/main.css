@@ -1760,6 +1760,14 @@ input, select, textarea {
 
 /* Section/Article */
 
+    section p, section ul {
+		margin-bottom: .5em;
+	}
+
+	section h4 {
+		margin-top: 2em;
+	}
+
 	section.special, article.special {
 		text-align: center;
 	}
