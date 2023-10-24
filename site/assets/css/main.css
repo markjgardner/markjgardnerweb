@@ -2635,12 +2635,15 @@ input, select, textarea {
 			color: #ffffff;
 		}
 
-		#header h2, #header h3, #header h4, #header h5, #header h6 {
+		#header h2, #header h3, #header h4, #header h6 {
 			color: #ffffff;
 		}
 
-		#header h1 {
+		#header h1, #header h5 {
 			color: rgba(255, 255, 255, 0.5);
+		}
+
+		#header h1 {
 			font-size: 1.35em;
 			line-height: 1.75em;
 			margin: 0;
