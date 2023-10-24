@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-env:
-  AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
-  AZURE_STORAGE_ACCESS_KEY: ${{ secrets.AZURE_STORAGE_ACCESS_KEY }}
-
 jobs:
   publish-test:
     runs-on: ubuntu-latest
@@ -21,13 +17,13 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az storage blob delete-batch --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} --account-key ${{ env.AZURE_STORAGE_ACCESS_KEY }} --source '${{ env.CONTAINER_NAME }}/test' --pattern "*"
+          az storage blob delete-batch --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} --account-key ${{ secrets.AZURE_STORAGE_ACCESS_KEY }} --source '${{ vars.CONTAINER_NAME }}/test' --pattern "*"
 
     - name: Publish to test site
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az storage blob upload-batch --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} --account-key ${{ env.AZURE_STORAGE_ACCESS_KEY }} --destination '${{ env.CONTAINER_NAME }}/test' --source . --pattern "*"
+          az storage blob upload-batch --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} --account-key ${{ secrets.AZURE_STORAGE_ACCESS_KEY }} --destination '${{ vars.CONTAINER_NAME }}/test' --source . --pattern "*"
 
   publish-prod:
     runs-on: ubuntu-latest
@@ -41,11 +37,11 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az storage blob delete-batch --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} --account-key ${{ secrets.AZURE_STORAGE_ACCESS_KEY }} --source ${{ env.CONTAINER_NAME }}/prod --pattern "*"
+          az storage blob delete-batch --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} --account-key ${{ secrets.AZURE_STORAGE_ACCESS_KEY }} --source ${{ vars.CONTAINER_NAME }}/prod --pattern "*"
 
     - name: Publish to prod site
       if: github.event_name == 'workflow_dispatch' || github.event_name == 'approval'
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az storage blob upload-batch --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} --account-key ${{ secrets.AZURE_STORAGE_ACCESS_KEY }} --destination ${{ env.CONTAINER_NAME }}/prod --source . --pattern "*"
+          az storage blob upload-batch --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} --account-key ${{ secrets.AZURE_STORAGE_ACCESS_KEY }} --destination ${{ vars.CONTAINER_NAME }}/prod --source . --pattern "*"
