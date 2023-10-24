@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     needs: publish-test
+    permissions:
+      id-token: write
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
